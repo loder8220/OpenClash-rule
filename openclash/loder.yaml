@@ -1,0 +1,305 @@
+# 自己手搓的配置文件，参考：https://wiki.metacubex.one/example/conf/
+
+# 锚点
+p:
+  &p {
+    type: http,
+    interval: 3600,
+    health-check:
+      {
+        enable: true,
+        url: "https://www.gstatic.com/generate_204",
+        interval: 300,
+      },
+  }
+# url 里填写自己的订阅,名称不能重复
+proxy-providers:
+  hongxingyun:
+    <<: *p
+    url: "https://hongxingyun10.vip/hxyunvip?token=ee6df3a5a162aaa2d072c6b05177bf57"
+  mojie:
+    <<: *p
+    url: "https://a.mjsub.org/api/v1/client/subscribe?token=c25f6ee7eda0c22e43e8021a2bd82dc0"
+ipv6: true
+allow-lan: true
+mixed-port: 7890
+external-controller: 127.0.0.1:9090
+profile:
+  store-selected: true
+  store-fake-ip: true
+dns:
+  enable: true
+  ipv6: true
+  enhanced-mode: fake-ip
+  fake-ip-range: 28.0.0.1/8
+  fake-ip-filter:
+    - "*"
+    - "+.lan"
+    - "+.local"
+  default-nameserver:
+    - 223.5.5.5
+  nameserver:
+    - https://doh.pub/dns-query
+    - https://dns.alidns.com/dns-query
+
+#直连，固定写法
+proxies:
+  - name: "直连"
+    type: direct
+    udp: true
+
+# 节点组
+proxy-groups:
+  - {
+      name: 默认,
+      type: select,
+      proxies:
+        [
+          自动选择,
+          香港自动选择,
+          台湾自动选择,
+          日本自动选择,
+          新加坡自动选择,
+          美国自动选择,
+          其它地区,
+          全部节点,
+          直连,
+        ],
+    }
+  - {
+      name: Google,
+      type: select,
+      proxies:
+        [
+          默认,
+          自动选择,
+          香港自动选择,
+          台湾自动选择,
+          日本自动选择,
+          新加坡自动选择,
+          美国自动选择,
+          其它地区,
+          全部节点,
+          直连,
+        ],
+    }
+  - {
+      name: Github,
+      type: select,
+      proxies:
+        [
+          默认,
+          自动选择,
+          香港自动选择,
+          台湾自动选择,
+          日本自动选择,
+          新加坡自动选择,
+          美国自动选择,
+          其它地区,
+          全部节点,
+          直连,
+        ],
+    }
+  - {
+      name: YouTube,
+      type: select,
+      proxies:
+        [
+          默认,
+          自动选择,
+          香港自动选择,
+          台湾自动选择,
+          日本自动选择,
+          新加坡自动选择,
+          美国自动选择,
+          其它地区,
+          全部节点,
+          直连,
+        ],
+    }
+  - {
+      name: Docker,
+      type: select,
+      proxies:
+        [
+          默认,
+          自动选择,
+          香港自动选择,
+          台湾自动选择,
+          日本自动选择,
+          新加坡自动选择,
+          美国自动选择,
+          其它地区,
+          全部节点,
+          直连,
+        ],
+    }
+  - {
+      name: OpenAi,
+      type: select,
+      proxies:
+        [
+          默认,
+          自动选择,
+          香港自动选择,
+          台湾自动选择,
+          日本自动选择,
+          新加坡自动选择,
+          美国自动选择,
+          其它地区,
+          全部节点,
+          直连,
+        ],
+    }
+  - {
+      name: TikTok,
+      type: select,
+      proxies:
+        [
+          默认,
+          自动选择,
+          香港自动选择,
+          台湾自动选择,
+          日本自动选择,
+          新加坡自动选择,
+          美国自动选择,
+          其它地区,
+          全部节点,
+          直连,
+        ],
+    }
+  - {
+      name: 国内,
+      type: select,
+      proxies:
+        [
+          直连,
+          默认,
+          香港自动选择,
+          台湾自动选择,
+          日本自动选择,
+          新加坡自动选择,
+          美国自动选择,
+          其它地区,
+          全部节点,
+          自动选择,
+        ],
+    }
+    # 下面是地区节点分组
+  - {
+      name: 自动选择,
+      type: url-test,
+      include-all: true,
+      # 排除直连、官网、剩余、异常、套餐
+      filter: "(?i)^(?!.*(?:直连|官网|剩余|异常|套餐|流量)).*",
+      icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/Auto.png",
+    }
+  - {
+      name: 香港自动选择,
+      type: url-test,
+      include-all: true,
+      filter: "(?i)(?!直连)(香港|hk|hongkong|hong kong)",
+      icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/HK.png",
+    }
+  - {
+      name: 台湾自动选择,
+      type: url-test,
+      include-all: true,
+      filter: "(?i)(?!直连)(台湾|tw|taiwan)",
+      icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/TW.png",
+    }
+  - {
+      name: 日本自动选择,
+      type: url-test,
+      include-all: true,
+      filter: "(?i)(?!直连)(日本|jp|japan)",
+      icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/JP.png",
+    }
+  - {
+      name: 美国自动选择,
+      type: url-test,
+      include-all: true,
+      filter: "(?i)(?!直连)(美国|us|unitedstates|united states)",
+      icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/US.png",
+    }
+  - {
+      name: 新加坡自动选择,
+      type: url-test,
+      include-all: true,
+      filter: "(?i)(新加坡|sg|singapore)",
+      icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/SG.png",
+    }
+  - {
+      name: 其它地区,
+      type: select,
+      include-all: true,
+      filter: "(?i)^(?!.*(?:🇭🇰|🇯🇵|🇺🇸|🇸🇬|🇨🇳|港|hk|hongkong|台|tw|taiwan|日|jp|japan|新|sg|singapore|美|us|unitedstates|直连|官网|剩余|异常|套餐|流量)).*",
+      icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/Available.png",
+    }
+  - {
+      name: 全部节点,
+      type: select,
+      include-all: true,
+      icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/Global.png",
+    }
+
+#域名组
+rule-anchor:
+  ip: &ip { type: http, interval: 86400, behavior: ipcidr, format: text }
+  domain:
+    &domain { type: http, interval: 86400, behavior: domain, format: text }
+rule-providers:
+  # 国内域名
+  cn_domain:
+    <<: *domain
+    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/cn.list"
+    # 国内IP
+  cn_ip:
+    <<: *ip
+    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/cn.list"
+  # google 域名
+  google_domain:
+    <<: *domain
+    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/google.list"
+  # google IP
+  google_ip:
+    <<: *ip
+    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/google.list"
+  #docker 域名
+  docker_domain:
+    <<: *domain
+    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/docker.list"
+  #github 域名
+  github_domain:
+    <<: *domain
+    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/github.list"
+  #openai 域名
+  openai_domain:
+    <<: *domain
+    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/openai.list"
+  #youtube 域名
+  youtube_domain:
+    <<: *domain
+    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/youtube.list"
+  #tiktok 域名
+  tiktok_domain:
+    <<: *domain
+    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/tiktok.list"
+  #国外域名
+  geolocation-!cn:
+    <<: *domain
+    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/geolocation-!cn.list"
+
+rules:
+  - GEOIP,lan,直连,no-resolve
+  - RULE-SET,google_domain,Google
+  - RULE-SET,docker_domain,Docker
+  - RULE-SET,github_domain,Github
+  - RULE-SET,openai_domain,OpenAi
+  - RULE-SET,youtube_domain,YouTube
+  - RULE-SET,tiktok_domain,TikTok
+  - RULE-SET,google_ip,Google
+  - RULE-SET,geolocation-!cn,默认
+  - RULE-SET,cn_domain,国内
+  - RULE-SET,cn_ip,国内
+  - MATCH,默认
