@@ -1,6 +1,32 @@
 # 自己手搓的配置文件，参考：https://wiki.metacubex.one/example/conf/
 
 # 锚点
+pr:
+  &pr {
+    type: select,
+    proxies:
+      [
+        默认,
+        智能选择,
+        香港智能,
+        台湾智能,
+        日本智能,
+        新加坡智能,
+        美国智能,
+        自动选择,
+        香港自动,
+        台湾自动,
+        日本自动,
+        新加坡自动,
+        美国自动,
+        英国自动,
+        德国自动,
+        加拿大自动,
+        其它地区,
+        全部节点,
+        直连,
+      ],
+  }
 p:
   &p {
     type: http,
@@ -55,119 +81,32 @@ proxy-groups:
       type: select,
       proxies:
         [
+          智能选择,
           自动选择,
-          香港自动选择,
-          台湾自动选择,
-          日本自动选择,
-          新加坡自动选择,
-          美国自动选择,
+          香港自动,
+          台湾自动,
+          日本自动,
+          新加坡自动,
+          美国自动,
+          英国自动,
+          德国自动,
+          加拿大自动,
           其它地区,
+          香港智能,
+          台湾智能,
+          日本智能,
+          新加坡智能,
+          美国智能,
           全部节点,
           直连,
         ],
     }
-  - {
-      name: Google,
-      type: select,
-      proxies:
-        [
-          默认,
-          自动选择,
-          香港自动选择,
-          台湾自动选择,
-          日本自动选择,
-          新加坡自动选择,
-          美国自动选择,
-          其它地区,
-          全部节点,
-          直连,
-        ],
-    }
-  - {
-      name: Github,
-      type: select,
-      proxies:
-        [
-          默认,
-          自动选择,
-          香港自动选择,
-          台湾自动选择,
-          日本自动选择,
-          新加坡自动选择,
-          美国自动选择,
-          其它地区,
-          全部节点,
-          直连,
-        ],
-    }
-  - {
-      name: YouTube,
-      type: select,
-      proxies:
-        [
-          默认,
-          自动选择,
-          香港自动选择,
-          台湾自动选择,
-          日本自动选择,
-          新加坡自动选择,
-          美国自动选择,
-          其它地区,
-          全部节点,
-          直连,
-        ],
-    }
-  - {
-      name: Docker,
-      type: select,
-      proxies:
-        [
-          默认,
-          自动选择,
-          香港自动选择,
-          台湾自动选择,
-          日本自动选择,
-          新加坡自动选择,
-          美国自动选择,
-          其它地区,
-          全部节点,
-          直连,
-        ],
-    }
-  - {
-      name: OpenAi,
-      type: select,
-      proxies:
-        [
-          默认,
-          自动选择,
-          香港自动选择,
-          台湾自动选择,
-          日本自动选择,
-          新加坡自动选择,
-          美国自动选择,
-          其它地区,
-          全部节点,
-          直连,
-        ],
-    }
-  - {
-      name: TikTok,
-      type: select,
-      proxies:
-        [
-          默认,
-          自动选择,
-          香港自动选择,
-          台湾自动选择,
-          日本自动选择,
-          新加坡自动选择,
-          美国自动选择,
-          其它地区,
-          全部节点,
-          直连,
-        ],
-    }
+  - { name: Google, <<: *pr }
+  - { name: Github, <<: *pr }
+  - { name: YouTube, <<: *pr }
+  - { name: Docker, <<: *pr }
+  - { name: OpenAi, <<: *pr }
+  - { name: TikTok, <<: *pr }
   - {
       name: 国内,
       type: select,
@@ -175,14 +114,23 @@ proxy-groups:
         [
           直连,
           默认,
-          香港自动选择,
-          台湾自动选择,
-          日本自动选择,
-          新加坡自动选择,
-          美国自动选择,
-          其它地区,
-          全部节点,
           自动选择,
+          香港自动,
+          台湾自动,
+          日本自动,
+          新加坡自动,
+          美国自动,
+          英国自动,
+          德国自动,
+          加拿大自动,
+          其它地区,
+          香港智能,
+          台湾智能,
+          日本智能,
+          新加坡智能,
+          美国智能,
+          智能选择,
+          全部节点,
         ],
     }
   - {
@@ -193,12 +141,21 @@ proxy-groups:
           直连,
           默认,
           自动选择,
-          香港自动选择,
-          台湾自动选择,
-          日本自动选择,
-          新加坡自动选择,
-          美国自动选择,
+          香港自动,
+          台湾自动,
+          日本自动,
+          新加坡自动,
+          美国自动,
+          英国自动,
+          德国自动,
+          加拿大自动,
           其它地区,
+          香港智能,
+          台湾智能,
+          日本智能,
+          新加坡智能,
+          美国智能,
+          智能选择,
           全部节点,
         ],
     }
@@ -209,56 +166,117 @@ proxy-groups:
       include-all: true,
       # 排除直连、官网、剩余、异常、套餐
       filter: "(?i)^(?!.*(?:直连|官网|剩余|异常|套餐|流量)).*",
-      icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/Auto.png",
     }
   - {
-      name: 香港自动选择,
+      name: 香港自动,
       type: url-test,
       include-all: true,
       filter: "(?i)(?!直连)(香港|hk|hongkong|hong kong)",
-      icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/HK.png",
     }
   - {
-      name: 台湾自动选择,
+      name: 台湾自动,
       type: url-test,
       include-all: true,
       filter: "(?i)(?!直连)(台湾|tw|taiwan)",
-      icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/TW.png",
     }
   - {
-      name: 日本自动选择,
+      name: 日本自动,
       type: url-test,
       include-all: true,
       filter: "(?i)(?!直连)(日本|jp|japan)",
-      icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/JP.png",
     }
   - {
-      name: 美国自动选择,
-      type: url-test,
-      include-all: true,
-      filter: "(?i)(?!直连)(美国|us|unitedstates|united states)",
-      icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/US.png",
-    }
-  - {
-      name: 新加坡自动选择,
+      name: 新加坡自动,
       type: url-test,
       include-all: true,
       filter: "(?i)(新加坡|sg|singapore)",
-      icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/SG.png",
+    }
+  - {
+      name: 美国自动,
+      type: url-test,
+      include-all: true,
+      filter: "(?i)(?!直连)(美国|us|unitedstates|united states)",
+    }
+  - {
+      name: 英国自动,
+      type: url-test,
+      include-all: true,
+      filter: "(?i)(英国|gb|united kingdom)",
+    }
+  - {
+      name: 德国自动,
+      type: url-test,
+      include-all: true,
+      filter: "(?i)(德国|de|germany)",
+    }
+  - {
+      name: 加拿大自动,
+      type: url-test,
+      include-all: true,
+      filter: "(?i)(加拿大|ca|canada)",
     }
   - {
       name: 其它地区,
       type: select,
       include-all: true,
-      filter: "(?i)^(?!.*(?:🇭🇰|🇯🇵|🇺🇸|🇸🇬|🇨🇳|港|hk|hongkong|台|tw|taiwan|日|jp|japan|新|sg|singapore|美|us|unitedstates|直连|官网|剩余|异常|套餐|流量)).*",
-      icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/Available.png",
+      filter: "(?i)^(?!.*(?:🇭🇰|🇯🇵|🇺🇸|🇸🇬|🇨🇳|港|hk|hongkong|台|tw|taiwan|日|jp|japan|新|sg|singapore|美|us|unitedstates|加拿大|ca|canada|德国|de|germany|英国|gb|united kingdom|直连|官网|剩余|异常|套餐|流量)).*",
     }
   - {
-      name: 全部节点,
-      type: select,
+      name: 香港智能,
+      type: smart,
+      uselightgbm: true,
+      collectdata: false,
       include-all: true,
-      icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/Global.png",
+      interval: 300,
+      filter: "(?i)(?!直连)(香港|hk|hongkong|hong kong)",
     }
+  - {
+      name: 台湾智能,
+      type: smart,
+      uselightgbm: true,
+      collectdata: false,
+      include-all: true,
+      interval: 300,
+      filter: "(?i)(?!直连)(台湾|tw|taiwan)",
+    }
+  - {
+      name: 日本智能,
+      type: smart,
+      uselightgbm: true,
+      collectdata: false,
+      include-all: true,
+      interval: 300,
+      filter: "(?i)(?!直连)(日本|jp|japan)",
+    }
+  - {
+      name: 新加坡智能,
+      type: smart,
+      uselightgbm: true,
+      collectdata: false,
+      include-all: true,
+      interval: 300,
+      filter: "(?i)(新加坡|sg|singapore)",
+    }
+  - {
+      name: 美国智能,
+      type: smart,
+      uselightgbm: true,
+      collectdata: false,
+      include-all: true,
+      interval: 300,
+      filter: "(?i)(?!直连)(美国|us|unitedstates|united states)",
+    }
+  - {
+      name: 智能选择,
+      type: smart,
+      uselightgbm: true,
+      collectdata: false,
+      include-all: true,
+      interval: 300,
+      filter: "(?i)^(?!.*(?:直连|官网|剩余|异常|套餐|流量)).*",
+    }
+
+  - { name: 全部节点, type: select, include-all: true }
 
 #域名组
 rule-anchor:
