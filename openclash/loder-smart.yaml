@@ -6,23 +6,12 @@ pr:
     type: select,
     proxies:
       [
-        默认,
         智能选择,
         香港智能,
         台湾智能,
         日本智能,
         新加坡智能,
         美国智能,
-        自动选择,
-        香港自动,
-        台湾自动,
-        日本自动,
-        新加坡自动,
-        美国自动,
-        英国自动,
-        德国自动,
-        加拿大自动,
-        其它地区,
         全部节点,
         直连,
       ],
@@ -42,10 +31,10 @@ p:
 proxy-providers:
   hongxingyun:
     <<: *p
-    url: "https://hongxingyun10.vip/hxyunvip?token=ee6df3a5a162aaa2d072c6b05177bf57"
+    url: "https://106.55.228.246:36666/hxvip?token=b7a6e5eabcebd869a730050e1b6b184c"
   mojie:
     <<: *p
-    url: "https://a.mjsub.org/api/v1/client/subscribe?token=c25f6ee7eda0c22e43e8021a2bd82dc0"
+    url: "https://47.242.128.61:5000/api/v1/client/subscribe?token=f2db054b12517e2726c87a2f4910cf02"
 ipv6: true
 allow-lan: true
 mixed-port: 7890
@@ -59,7 +48,6 @@ dns:
   enhanced-mode: fake-ip
   fake-ip-range: 28.0.0.1/8
   fake-ip-filter:
-    - "*"
     - "+.lan"
     - "+.local"
   default-nameserver:
@@ -76,22 +64,32 @@ proxies:
 
 # 节点组
 proxy-groups:
+  - { name: Google, <<: *pr }
+  - { name: Github, <<: *pr }
+  - { name: YouTube, <<: *pr }
+  - { name: Docker, <<: *pr }
   - {
-      name: 默认,
+      name: OpenAi,
       type: select,
       proxies:
         [
+          OpenAI智能,
           智能选择,
-          自动选择,
-          香港自动,
-          台湾自动,
-          日本自动,
-          新加坡自动,
-          美国自动,
-          英国自动,
-          德国自动,
-          加拿大自动,
-          其它地区,
+          台湾智能,
+          日本智能,
+          新加坡智能,
+          美国智能,
+          全部节点,
+          直连,
+        ],
+    }
+  - {
+      name: TikTok,
+      type: select,
+      proxies:
+        [
+          TikTok智能,
+          智能选择,
           香港智能,
           台湾智能,
           日本智能,
@@ -101,35 +99,18 @@ proxy-groups:
           直连,
         ],
     }
-  - { name: Google, <<: *pr }
-  - { name: Github, <<: *pr }
-  - { name: YouTube, <<: *pr }
-  - { name: Docker, <<: *pr }
-  - { name: OpenAi, <<: *pr }
-  - { name: TikTok, <<: *pr }
   - {
       name: 国内,
       type: select,
       proxies:
         [
           直连,
-          默认,
-          自动选择,
-          香港自动,
-          台湾自动,
-          日本自动,
-          新加坡自动,
-          美国自动,
-          英国自动,
-          德国自动,
-          加拿大自动,
-          其它地区,
+          智能选择,
           香港智能,
           台湾智能,
           日本智能,
           新加坡智能,
           美国智能,
-          智能选择,
           全部节点,
         ],
     }
@@ -139,87 +120,25 @@ proxy-groups:
       proxies:
         [
           直连,
-          默认,
-          自动选择,
-          香港自动,
-          台湾自动,
-          日本自动,
-          新加坡自动,
-          美国自动,
-          英国自动,
-          德国自动,
-          加拿大自动,
-          其它地区,
+          智能选择,
           香港智能,
           台湾智能,
           日本智能,
           新加坡智能,
           美国智能,
-          智能选择,
           全部节点,
         ],
     }
-    # 下面是地区节点分组
+    # 智能节点组
   - {
-      name: 自动选择,
-      type: url-test,
+      #所有节点智能选择，过滤掉一些明显不合适的节点（如直连、官网、剩余、异常、套餐、流量等），其他的都让它去测延迟
+      name: 智能选择,
+      type: smart,
+      uselightgbm: true,
+      collectdata: false,
       include-all: true,
-      # 排除直连、官网、剩余、异常、套餐
+      interval: 300,
       filter: "(?i)^(?!.*(?:直连|官网|剩余|异常|套餐|流量)).*",
-    }
-  - {
-      name: 香港自动,
-      type: url-test,
-      include-all: true,
-      filter: "(?i)(?!直连)(香港|hk|hongkong|hong kong)",
-    }
-  - {
-      name: 台湾自动,
-      type: url-test,
-      include-all: true,
-      filter: "(?i)(?!直连)(台湾|tw|taiwan)",
-    }
-  - {
-      name: 日本自动,
-      type: url-test,
-      include-all: true,
-      filter: "(?i)(?!直连)(日本|jp|japan)",
-    }
-  - {
-      name: 新加坡自动,
-      type: url-test,
-      include-all: true,
-      filter: "(?i)(新加坡|sg|singapore)",
-    }
-  - {
-      name: 美国自动,
-      type: url-test,
-      include-all: true,
-      filter: "(?i)(?!直连)(美国|us|unitedstates|united states)",
-    }
-  - {
-      name: 英国自动,
-      type: url-test,
-      include-all: true,
-      filter: "(?i)(英国|gb|united kingdom)",
-    }
-  - {
-      name: 德国自动,
-      type: url-test,
-      include-all: true,
-      filter: "(?i)(德国|de|germany)",
-    }
-  - {
-      name: 加拿大自动,
-      type: url-test,
-      include-all: true,
-      filter: "(?i)(加拿大|ca|canada)",
-    }
-  - {
-      name: 其它地区,
-      type: select,
-      include-all: true,
-      filter: "(?i)^(?!.*(?:🇭🇰|🇯🇵|🇺🇸|🇸🇬|🇨🇳|港|hk|hongkong|台|tw|taiwan|日|jp|japan|新|sg|singapore|美|us|unitedstates|加拿大|ca|canada|德国|de|germany|英国|gb|united kingdom|直连|官网|剩余|异常|套餐|流量)).*",
     }
   - {
       name: 香港智能,
@@ -267,13 +186,22 @@ proxy-groups:
       filter: "(?i)(?!直连)(美国|us|unitedstates|united states)",
     }
   - {
-      name: 智能选择,
+      name: OpenAI智能,
       type: smart,
       uselightgbm: true,
       collectdata: false,
       include-all: true,
       interval: 300,
-      filter: "(?i)^(?!.*(?:直连|官网|剩余|异常|套餐|流量)).*",
+      filter: "(?i)(日本|jp|japan|新加坡|sg|singapore|美国|us|united states)",
+    }
+  - {
+      name: TikTok智能,
+      type: smart,
+      uselightgbm: true,
+      collectdata: false,
+      include-all: true,
+      interval: 300,
+      filter: "(?i)(日本|jp|japan|美国|us|unitedstates|新加坡|sg|singapore)",
     }
 
   - { name: 全部节点, type: select, include-all: true }
@@ -326,14 +254,14 @@ rule-providers:
 
 rules:
   - GEOIP,lan,直连,no-resolve
-  - RULE-SET,youtube_domain,YouTube
   - RULE-SET,docker_domain,Docker
   - RULE-SET,github_domain,Github
   - RULE-SET,openai_domain,OpenAi
   - RULE-SET,tiktok_domain,TikTok
+  - RULE-SET,youtube_domain,YouTube
   - RULE-SET,google_domain,Google
   - RULE-SET,google_ip,Google
-  - RULE-SET,gwf_domain,默认
+  - RULE-SET,gwf_domain,智能选择
   - RULE-SET,cn_domain,国内
   - RULE-SET,cn_ip,国内
   - MATCH,漏网之鱼
