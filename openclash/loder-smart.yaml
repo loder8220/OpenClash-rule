@@ -145,7 +145,7 @@ proxy-groups:
       collectdata: false,
       include-all: true,
       interval: 300,
-      filter: "(?i)^(?!.*(?:直连|官网|剩余|异常|套餐|流量|邮箱)).*",
+      filter: "(?i)(香港|hk|hongkong|台湾|tw|taiwan|日本|jp|japan|新加坡|sg|singapore|美国|us|usa|united)",
     }
   - {
       name: 香港智能,
