@@ -245,10 +245,10 @@ rules:
   - GEOSITE,docker,Docker
   # TikTOK
   - GEOSITE,tiktok,TikTok
-  #
-  - GEOSITE,google,Google
   # YouTube
   - GEOSITE,youtube,YouTube
+  #
+  - GEOSITE,google,Google
   # Github
   - GEOSITE,github,Github
   # GFW
