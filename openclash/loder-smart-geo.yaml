@@ -40,6 +40,8 @@ proxy-providers:
     url: "https://47.242.128.61:5000/api/v1/client/subscribe?token=f2db054b12517e2726c87a2f4910cf02"
 ipv6: true
 allow-lan: true
+unified-delay: true
+tcp-concurrent: true
 mixed-port: 7890
 external-controller: 127.0.0.1:9090
 profile:
