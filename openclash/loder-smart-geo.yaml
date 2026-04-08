@@ -122,10 +122,11 @@ proxy-groups:
         ],
     }
   - {
-      name: 国外域名,
+      name: 国外非gfw,
       type: select,
       proxies:
         [
+          直连,
           智能选择,
           香港智能,
           台湾智能,
@@ -133,7 +134,6 @@ proxy-groups:
           新加坡智能,
           美国智能,
           全部节点,
-          直连,
         ],
     }
   - {
@@ -251,7 +251,7 @@ rules:
   # GFW
   - GEOSITE,gfw,智能选择
   # 非国内
-  - GEOSITE,geolocation-!cn,国外域名
+  - GEOSITE,geolocation-!cn,国外非gfw
   # 国内
   - GEOSITE,cn,国内
   - GEOIP,cn,国内,no-resolve
