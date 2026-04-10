@@ -3,57 +3,74 @@
 #使用smart智能
 #使用GEO数据库
 
-# 锚点
-pr:
-  &pr {
-    type: select,
-    proxies:
-      [
-        智能选择,
-        香港智能,
-        台湾智能,
-        日本智能,
-        新加坡智能,
-        美国智能,
-        全部节点,
-        直连,
-      ],
-  }
-p:
-  &p {
-    type: http,
-    interval: 3600,
+# 订阅相关配置
+proxy-providers:
+  hongxingyun: #唯一名称，自定义
+    type: http #协议
+    interval: 3600 #更新周期
+    health-check: #可用检查
+      {
+        enable: true, #开启
+        url: "https://www.gstatic.com/generate_204", #检查使用的地址
+        interval: 300, #检查周期
+      }
+    # url 里填写自己的订阅,名称不能重复
+    url: "https://43.139.248.121:9000/hxyunvip?token=a016e5dad29772c66c49d584acc827f0"
+  mojie:
+    type: http
+    interval: 3600
     health-check:
       {
         enable: true,
         url: "https://www.gstatic.com/generate_204",
         interval: 300,
-      },
-  }
-# url 里填写自己的订阅,名称不能重复
-proxy-providers:
-  hongxingyun:
-    <<: *p
-    url: "https://106.55.228.246:36666/hxvip?token=b7a6e5eabcebd869a730050e1b6b184c"
-  mojie:
-    <<: *p
-    url: "https://47.242.128.61:5000/api/v1/client/subscribe?token=f2db054b12517e2726c87a2f4910cf02"
+      }
+    # url 里填写自己的订阅,名称不能重复
+    url: "https://47.112.97.173:5000/api/v1/client/subscribe?token=3effd0444f5419d39324bb54a7e171dc"
+
+# 协议栈配置
 ipv6: true
 allow-lan: true
 unified-delay: true
 tcp-concurrent: true
 mixed-port: 7890
 external-controller: 127.0.0.1:9090
+
 profile:
   store-selected: true
   store-fake-ip: true
+
+# 嗅探配置
+sniffer:
+  enable: true
+  sniff:
+    HTTP:
+      ports: [80, 8080-8880]
+      override-destination: true
+    TLS:
+      ports: [443, 8443]
+    QUIC:
+      ports: [443, 8443]
+  skip-domain:
+    - "Mijia Cloud"
+    - "+.push.apple.com"
+
+tun:
+  enable: true
+  stack: mixed
+  dns-hijack:
+    - "any:53"
+    - "tcp://any:53"
+  auto-route: true
+  auto-redirect: true
+  auto-detect-interface: true
+
 dns:
   enable: true
   ipv6: true
   enhanced-mode: fake-ip
   fake-ip-range: 28.0.0.1/8
   fake-ip-filter:
-    - "*"
     - "+.lan"
     - "+.local"
   default-nameserver:
@@ -71,10 +88,66 @@ proxies:
 
 # 节点组
 proxy-groups:
-  - { name: Google, <<: *pr }
-  - { name: Github, <<: *pr }
-  - { name: YouTube, <<: *pr }
-  - { name: Docker, <<: *pr }
+  - {
+      name: Google,
+      type: select,
+      proxies:
+        [
+          智能选择,
+          香港智能,
+          台湾智能,
+          日本智能,
+          新加坡智能,
+          美国智能,
+          全部节点,
+          直连,
+        ],
+    }
+  - {
+      name: Github,
+      type: select,
+      proxies:
+        [
+          智能选择,
+          香港智能,
+          台湾智能,
+          日本智能,
+          新加坡智能,
+          美国智能,
+          全部节点,
+          直连,
+        ],
+    }
+  - {
+      name: YouTube,
+      type: select,
+      proxies:
+        [
+          智能选择,
+          香港智能,
+          台湾智能,
+          日本智能,
+          新加坡智能,
+          美国智能,
+          全部节点,
+          直连,
+        ],
+    }
+  - {
+      name: Docker,
+      type: select,
+      proxies:
+        [
+          智能选择,
+          香港智能,
+          台湾智能,
+          日本智能,
+          新加坡智能,
+          美国智能,
+          全部节点,
+          直连,
+        ],
+    }
   - {
       name: OpenAi,
       type: select,
