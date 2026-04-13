@@ -164,6 +164,21 @@ proxy-groups:
         ],
     }
   - {
+      name: Gemini,
+      type: select,
+      proxies:
+        [
+          Gemini智能,
+          智能选择,
+          台湾智能,
+          日本智能,
+          新加坡智能,
+          美国智能,
+          全部节点,
+          直连,
+        ],
+    }
+  - {
       name: TikTok,
       type: select,
       proxies:
@@ -291,6 +306,15 @@ proxy-groups:
       filter: "(?i)(日本|jp|japan|新加坡|sg|singapore|美国|us|united states)",
     }
   - {
+      name: Gemini智能,
+      type: smart,
+      uselightgbm: true,
+      collectdata: true,
+      include-all: true,
+      interval: 300,
+      filter: "(?i)(台湾|tw|taiwan|日本|jp|japan|新加坡|sg|singapore|美国|us|united states)",
+    }
+  - {
       name: TikTok智能,
       type: smart,
       uselightgbm: true,
@@ -311,6 +335,8 @@ rules:
   - GEOIP,lan,直连,no-resolve
   # OpenAI
   - GEOSITE,openai,OpenAi
+  # Gemini
+  - GEOSITE,gemini,Gemini
   # Docker
   - GEOSITE,docker,Docker
   # TikTOK
