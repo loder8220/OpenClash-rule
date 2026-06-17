@@ -168,7 +168,8 @@ proxy-groups:
       type: select,
       proxies:
         [
-          Gemini智能,
+          Gemini自动,
+          Gemini手动,
           智能选择,
           台湾智能,
           日本智能,
@@ -306,13 +307,18 @@ proxy-groups:
       filter: "(?i)(日本|jp|japan|新加坡|sg|singapore|美国|us|united states)",
     }
   - {
-      name: Gemini智能,
-      type: smart,
-      uselightgbm: true,
-      collectdata: true,
+      name: Gemini自动,
+      type: url-test,
       include-all: true,
+      tolerance: 20,
       interval: 300,
-      filter: "(?i)(台湾|tw|taiwan|日本|jp|japan|新加坡|sg|singapore|美国|us|united states)",
+      filter: "(?i)(香港|hk|hongkong|台湾|tw|taiwan|日本|jp|japan|新加坡|sg|singapore|美国|us|usa|unitedstates|united states)",
+    }
+  - {
+      name: Gemini手动,
+      type: select,
+      include-all: true,
+      filter: "(?i)(香港|hk|hongkong|台湾|tw|taiwan|日本|jp|japan|新加坡|sg|singapore|美国|us|usa|unitedstates|united states)",
     }
   - {
       name: TikTok智能,
@@ -336,7 +342,7 @@ rules:
   # OpenAI
   - GEOSITE,openai,OpenAi
   # Gemini
-  - GEOSITE,gemini,Gemini
+  - GEOSITE,google-gemini,Gemini
   # Docker
   - GEOSITE,docker,Docker
   # TikTOK
