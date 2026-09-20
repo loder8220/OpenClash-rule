@@ -355,6 +355,9 @@ rules:
   - GEOSITE,google,Google
   # GFW
   - GEOSITE,gfw,智能选择
+  # AI大模型中转站
+  - DOMAIN-SUFFIX,packyapi.ai,智能选择
+  - DOMAIN-SUFFIX,packyapi.com,智能选择
   # 非国内
   - GEOSITE,geolocation-!cn,国外非gfw
   # 国内
