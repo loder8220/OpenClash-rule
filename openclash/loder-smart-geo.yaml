@@ -2,6 +2,9 @@
 
 #使用smart智能
 #使用GEO数据库
+# 已固化 LuCI 中可映射为 Mihomo YAML 的覆写项。
+# OpenClash 服务启停、核心选择、dnsmasq 缓存/AAAA 过滤、DHCP、
+# 防火墙 DNS 劫持和面板认证属于 OpenWrt/OpenClash 运行设置，无法写入本文件。
 
 # 订阅相关配置
 proxy-providers:
@@ -15,7 +18,7 @@ proxy-providers:
         interval: 300, #检查周期
       }
     # url 里填写自己的订阅,名称不能重复
-    url: "https://43.139.248.121:9000/hxyunvip?token=a016e5dad29772c66c49d584acc827f0"
+    url: ""
   mojie:
     type: http
     interval: 3600
@@ -26,61 +29,89 @@ proxy-providers:
         interval: 300,
       }
     # url 里填写自己的订阅,名称不能重复
-    url: "https://47.112.97.173:5000/api/v1/client/subscribe?token=3effd0444f5419d39324bb54a7e171dc"
+    url: ""
 
 # 协议栈配置
 ipv6: true
 allow-lan: true
+mode: rule
 unified-delay: true
 tcp-concurrent: true
-mixed-port: 7890
-external-controller: 127.0.0.1:9090
+mixed-port: 7893
+external-controller: 0.0.0.0:9090
 
 profile:
-  store-selected: false
+  store-selected: true
   store-fake-ip: true
 
 # 嗅探配置
 sniffer:
   enable: true
+  override-destination: false
   sniff:
     HTTP:
       ports: [80, 8080-8880]
-      override-destination: true
+      override-destination: false
     TLS:
       ports: [443, 8443]
     QUIC:
-      ports: [443, 8443]
+      ports: [443]
+  force-domain:
+    - "+.netflix.com"
+    - "+.nflxvideo.net"
+    - "+.amazonaws.com"
+    - "+.media.dssott.com"
   skip-domain:
     - "Mijia Cloud"
+    - "dlg.io.mi.com"
+    - "+.oray.com"
+    - "+.sunlogin.net"
     - "+.push.apple.com"
+  parse-pure-ip: true
 
 tun:
   enable: true
   stack: mixed
+  device: utun
   dns-hijack:
-    - "any:53"
-    - "tcp://any:53"
-  auto-route: true
-  auto-redirect: true
-  auto-detect-interface: true
+    - "127.0.0.1:53"
+  endpoint-independent-nat: true
+  auto-route: false
+  auto-detect-interface: false
+  auto-redirect: false
+  strict-route: false
+  disable-icmp-forwarding: false
+  gso: true
 
+# 需要开启 dnsmasq劫持DNS，在网络->DNS->勾选 DNS 重定向
 dns:
   enable: true
   ipv6: true
   nameserver-policy:
     "geosite:category-ads-all": rcode://success
+    "geosite:cn":
+      - https://doh.pub/dns-query
+      - https://dns.alidns.com/dns-query
+    "geosite:geolocation-!cn":
+      - "https://cloudflare-dns.com/dns-query#智能选择"
+      - "https://dns.google/dns-query#智能选择"
   enhanced-mode: fake-ip
-  fake-ip-range: 28.0.0.1/8
+  fake-ip-range: 198.18.0.1/16
+  # 需要关闭 dnsmasq 的重绑定保护，在网络DNS->筛选-> 取消勾选 重绑定保护
+  fake-ip-range6: fdfe:dcba:9876::1/64
   fake-ip-filter:
     - "+.lan"
     - "+.local"
+  fake-ip-filter-mode: blacklist
   default-nameserver:
     - tls://223.5.5.5
     - tls://223.6.6.6
   nameserver:
     - https://doh.pub/dns-query
     - https://dns.alidns.com/dns-query
+  listen: 0.0.0.0:7874
+  respect-rules: false
+  use-hosts: true
 
 #直连，固定写法
 proxies:
@@ -170,8 +201,8 @@ proxy-groups:
       type: select,
       proxies:
         [
-          Gemini自动,
           Gemini手动,
+          Gemini自动,
           智能选择,
           台湾智能,
           日本智能,
