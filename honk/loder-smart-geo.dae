@@ -1,0 +1,311 @@
+# Honk configuration converted from loder-smart-geo.yaml.
+# Target: OpenWrt/ImmortalWrt 25.12+, honk v0.1.0-beta.6.
+
+global {
+    wan_interface: auto
+    lan_interface: br-lan,wg
+
+    log_level: info
+    data_dir: '/etc/honk/data'
+    store_subscribe: true
+    nfqueue_enable: true
+
+    dial_mode: domain++
+    auto_config_kernel_parameter: true
+    bootstrap_resolver: '223.5.5.5:53'
+
+    tcp_check_url: 'https://www.gstatic.com/generate_204'
+    tcp_check_http_method: HEAD
+    udp_check_dns: '8.8.8.8:53', '[2001:4860:4860::8888]:53'
+    check_interval: 300s
+    check_tolerance: 20ms
+
+    preconnect_node_count: 'auto'
+    udp_warm_node_count: 1
+    max_concurrent_dials: 64
+}
+
+assets {
+    route: direct
+    subscription {
+        ua: 'clash.meta'
+        interval: 3600s
+        cache: true
+    }
+}
+
+subscription {
+    hongxingyun: 'https://106.55.228.246:36666/hxvip?token=e4c0d98f9711ac005c3d7d4341f1c067'
+    mojie: 'https://47.112.97.173:5000/api/v1/client/subscribe?token=3effd0444f5419d39324bb54a7e171dc'
+}
+
+group {
+    智能选择 {
+        filter: name(regex: '(?i)(香港|hk|hong[ -]?kong|台湾|tw|taiwan|日本|jp|japan|新加坡|sg|singapore|美国|us|usa|united[ -]?states)')
+        policy: score
+        check_url: 'https://www.gstatic.com/generate_204'
+        final: block
+    }
+
+    香港智能 {
+        filter: name(regex: '(?i)(香港|hk|hong[ -]?kong)')
+        policy: score
+        check_url: 'https://www.gstatic.com/generate_204'
+        final: block
+    }
+
+    台湾智能 {
+        filter: name(regex: '(?i)(台湾|tw|taiwan)')
+        policy: score
+        check_url: 'https://www.gstatic.com/generate_204'
+        final: block
+    }
+
+    日本智能 {
+        filter: name(regex: '(?i)(日本|jp|japan)')
+        policy: score
+        check_url: 'https://www.gstatic.com/generate_204'
+        final: block
+    }
+
+    新加坡智能 {
+        filter: name(regex: '(?i)(新加坡|sg|singapore)')
+        policy: score
+        check_url: 'https://www.gstatic.com/generate_204'
+        final: block
+    }
+
+    美国智能 {
+        filter: name(regex: '(?i)(美国|us|usa|united[ -]?states)')
+        policy: score
+        check_url: 'https://www.gstatic.com/generate_204'
+        final: block
+    }
+
+    OpenAI智能 {
+        filter: name(regex: '(?i)(日本|jp|japan|新加坡|sg|singapore|美国|us|usa|united[ -]?states)')
+        policy: score
+        check_url: 'https://www.gstatic.com/generate_204'
+        final: block
+    }
+
+    Gemini自动 {
+        filter: name(regex: '(?i)(香港|hk|hong[ -]?kong|台湾|tw|taiwan|日本|jp|japan|新加坡|sg|singapore|美国|us|usa|united[ -]?states)')
+        policy: urltest
+        tolerance: 20
+        check_url: 'https://www.gstatic.com/generate_204'
+        final: block
+    }
+
+    Gemini手动 {
+        filter: name(regex: '(?i)(香港|hk|hong[ -]?kong|台湾|tw|taiwan|日本|jp|japan|新加坡|sg|singapore|美国|us|usa|united[ -]?states)')
+        policy: selector
+        final: block
+    }
+
+    TikTok智能 {
+        filter: name(regex: '(?i)(日本|jp|japan|新加坡|sg|singapore|美国|us|usa|united[ -]?states)')
+        policy: score
+        check_url: 'https://www.gstatic.com/generate_204'
+        final: block
+    }
+
+    全部节点 {
+        policy: selector
+        final: block
+    }
+
+    Google {
+        filter: group('智能选择', '香港智能', '台湾智能', '日本智能', '新加坡智能', '美国智能', '全部节点')
+        filter: name(direct)
+        policy: selector
+        default: '智能选择'
+        final: block
+    }
+
+    Github {
+        filter: group('智能选择', '香港智能', '台湾智能', '日本智能', '新加坡智能', '美国智能', '全部节点')
+        filter: name(direct)
+        policy: selector
+        default: '智能选择'
+        final: block
+    }
+
+    YouTube {
+        filter: group('智能选择', '香港智能', '台湾智能', '日本智能', '新加坡智能', '美国智能', '全部节点')
+        filter: name(direct)
+        policy: selector
+        default: '智能选择'
+        final: block
+    }
+
+    Docker {
+        filter: group('智能选择', '香港智能', '台湾智能', '日本智能', '新加坡智能', '美国智能', '全部节点')
+        filter: name(direct)
+        policy: selector
+        default: '智能选择'
+        final: block
+    }
+
+    OpenAi {
+        filter: group('OpenAI智能', '智能选择', '台湾智能', '日本智能', '新加坡智能', '美国智能', '全部节点')
+        filter: name(direct)
+        policy: selector
+        default: 'OpenAI智能'
+        final: block
+    }
+
+    Gemini {
+        filter: group('Gemini自动', 'Gemini手动', '智能选择', '台湾智能', '日本智能', '新加坡智能', '美国智能', '全部节点')
+        filter: name(direct)
+        policy: selector
+        default: 'Gemini自动'
+        final: block
+    }
+
+    TikTok {
+        filter: group('TikTok智能', '智能选择', '香港智能', '台湾智能', '日本智能', '新加坡智能', '美国智能', '全部节点')
+        filter: name(direct)
+        policy: selector
+        default: 'TikTok智能'
+        final: block
+    }
+
+    国内 {
+        filter: name(direct)
+        filter: group('智能选择', '香港智能', '台湾智能', '日本智能', '新加坡智能', '美国智能', '全部节点')
+        policy: selector
+        default: direct
+        final: direct
+    }
+
+    国外非gfw {
+        filter: name(direct)
+        filter: group('智能选择', '香港智能', '台湾智能', '日本智能', '新加坡智能', '美国智能', '全部节点')
+        policy: selector
+        default: direct
+        final: direct
+    }
+
+    漏网之鱼 {
+        filter: name(direct)
+        filter: group('智能选择', '香港智能', '台湾智能', '日本智能', '新加坡智能', '美国智能', '全部节点')
+        policy: selector
+        default: direct
+        final: direct
+    }
+}
+
+routing {
+    domain(geosite: category-ads-all) -> block
+
+    # Force every client through Honk's split DNS. This keeps the proxy admission
+    # list below as the only place where client MAC addresses are maintained.
+    domain(
+        full: dns.google,
+        suffix: cloudflare-dns.com,
+        suffix: one.one.one.one,
+        suffix: dns.quad9.net,
+        suffix: doh.opendns.com
+    ) -> block(must)
+    dip(
+        1.1.1.1,
+        1.0.0.1,
+        8.8.8.8,
+        8.8.4.4,
+        9.9.9.9,
+        149.112.112.112,
+        2606:4700:4700::1111,
+        2606:4700:4700::1001,
+        2001:4860:4860::8888,
+        2001:4860:4860::8844,
+        2620:fe::fe,
+        2620:fe::9
+    ) -> block(must)
+    dport(853) -> block(must)
+
+    # Preserve LAN/router access for both IPv4 and IPv6 without bypassing DNS policy.
+    dip(geoip: private) && !dport(53) -> direct(must)
+
+    # Proxy admission gate. Add or remove LAN client MAC addresses only here.
+    # WireGuard clients remain authorized by their IPv4 and IPv6 source subnets.
+    !mac(
+        # 台式机
+        D8:BB:C1:CC:60:C9,
+        # MAC笔记本
+        FA:77:A2:B0:A2:01,
+        # 苹果手机
+        5C:50:D9:04:DA:BA,
+        # Ubuntu 199
+        02:11:32:2f:28:6a
+    ) && !sip(
+        # WG VPN
+        10.254.254.0/24,
+        fd92:b7a5:1e67:600::/64
+    ) -> direct
+
+    # Only authorized clients reach these proxy rules.
+    domain(geosite: openai) -> OpenAi
+    domain(geosite: google-gemini) -> Gemini
+    domain(geosite: docker) -> Docker
+    domain(geosite: tiktok) -> TikTok
+    domain(geosite: github) -> Github
+    domain(geosite: youtube) -> YouTube
+    domain(geosite: google) -> Google
+    domain(suffix: packyapi.ai, suffix: packyapi.com) -> OpenAi
+    domain(geosite: geolocation-!cn) -> 国外非gfw
+
+    # Domestic traffic stays direct for every client.
+    domain(geosite: cn) -> direct
+    dip(geoip: cn) -> direct
+
+    fallback: 漏网之鱼
+}
+
+dns {
+    use_host: true
+    ipversion_prefer: 0
+    optimistic_cache: true
+    optimistic_cache_ttl: 600
+    max_cache_size: 10000
+
+    upstream {
+        cn_doh: 'https://dns.alidns.com/dns-query' -> direct
+        cn_tencent_doh: 'https://doh.pub/dns-query' -> direct
+        cn_bytedance_udp: 'udp://180.184.1.1:53' -> direct
+        foreign_doh: 'https://1.1.1.1/dns-query' -> 智能选择
+        foreign_google_doh: 'https://dns.google/dns-query' -> 智能选择
+        foreign_quad9_doh: 'https://dns.quad9.net/dns-query' -> 智能选择
+    }
+
+    routing {
+        request {
+            qname(geosite: category-ads-all) -> reject
+            qname(geosite: cn) -> cn_doh
+            fallback: foreign_doh
+        }
+        response {
+            fallback: accept
+        }
+    }
+}
+
+experimental {
+    native_api {
+        enabled: true
+        listen: '0.0.0.0:9527'
+        password_auth: true
+        config_write: true
+        ui: embedded
+        record_flows: true
+        record_traffic: true
+        record_memory: true
+        record_logs: true
+        record_dns_log: true
+    }
+
+    cache_file {
+        enabled: true
+        store_dns: true
+    }
+}
